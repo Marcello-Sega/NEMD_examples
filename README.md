@@ -72,6 +72,12 @@ https://www.cambridge.org/download_file/954447
 Rapaport Code examples
 
 
+Workshops and other communities
+-------------------------------
+
+https://ostueker.github.io/bst-md-theory-lesson-novice/index.html
+
+
 Forums for discussion
 -----------------------
 
