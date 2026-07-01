@@ -5,7 +5,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
-#SBATCH --array=0-500
+#SBATCH --array=0-255
 
 #SBATCH --partition=standard
 #SBATCH --qos=standard
