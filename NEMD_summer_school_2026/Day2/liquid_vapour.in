@@ -32,6 +32,7 @@ variable seed    index 90187   # RNG seed for the initial velocities. The ensemb
 variable dump    index 0       # -var dump 1 -> write slab_traj.xyz (production) for view_domain / intrinsic
 variable localstress index 0   # -var localstress 1 -> also bin the diagonal pressure tensor for gamma
 variable outdir  index .       # output directory (the ensemble sets one per replica)
+variable fmt     index xyz     # xyz or lammpstrj
 shell mkdir ${outdir}
 
 # ---- derived geometry (snap box to whole FCC lattice constants) ----
@@ -91,9 +92,17 @@ print "bin ${bin}"     append ${outdir}/slab_params.txt
 
 # optional orientation trajectory for VMD/OVITO (production only; off by default, pass -var dump 1).
 # element names are only for viewer colouring; the model is a generic LJ channel.
-if "${dump} > 0" then &
+
+# Optional trajectory output.
+# Default: xyz for simple visualisation.
+# Use -var fmt lammps for an MDAnalysis/Pytim-friendly trajectory with box.
+if "${dump} > 0 && ${fmt} == xyz" then &
   "dump dvmd all xyz 1000 ${outdir}/day2_traj.xyz" &
   "dump_modify dvmd element Ar sort id"
+
+if "${dump} > 0 && ${fmt} == lammps" then &
+  "dump dtraj all custom 1000 ${outdir}/day2_traj.lammpstrj id type x y z" &
+  "dump_modify dtraj sort id pbc yes"
 
 #Equilibration run
 fix nvtall all nvt temp ${T} ${T} ${tdamp}
